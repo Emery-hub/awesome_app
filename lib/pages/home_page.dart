@@ -22,10 +22,6 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child:
-                NameCardWidget(myText: myText, nameController: _nameController),
-          ),
         ),
       ),
       drawer: MyDrawer(),
