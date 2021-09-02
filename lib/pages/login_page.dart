@@ -1,4 +1,5 @@
 import 'package:awesome_app/pages/home_page.dart';
+import 'package:awesome_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -70,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           RaisedButton(
                             onPressed: () {
+                              Constants.prefs!.setBool("Logged In", true);
                               // formKey.currentState!.validate();
 
                               // Navigator.push(
@@ -79,7 +81,8 @@ class _LoginPageState extends State<LoginPage> {
                               //   ),
                               // );
 
-                              Navigator.pushNamed(context, HomePage.routeName);
+                              Navigator.pushReplacementNamed(
+                                  context, HomePage.routeName);
                             },
                             child: Text("Sign In"),
                             color: Colors.orangeAccent,
