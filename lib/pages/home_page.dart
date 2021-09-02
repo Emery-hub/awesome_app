@@ -1,6 +1,9 @@
+// import 'dart:html';
+
 import 'package:awesome_app/drawer.dart';
-import 'package:awesome_app/name_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,8 +13,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var myText = "Change My Name";
-  TextEditingController _nameController = TextEditingController();
+  // var myText = "Change My Name";
+  // TextEditingController _nameController = TextEditingController();
+
+  var url = Uri.parse("https://jsonplaceholder.typicode.com/photos");
+  var data;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async {
+    var res = await http
+        .get(Uri.parse("https://jsonplaceholder.typicode.com/photos"));
+    data = jsonDecode(res.body);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,16 +44,25 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Awesome App"),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-        ),
-      ),
+      body: data != null
+          ? ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(data[index]["title"]),
+                  subtitle: Text("ID: ${data[index]["id"]}"),
+                  leading: Image.network(data[index]["url"]),
+                );
+              },
+              itemCount: data.length,
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          myText = _nameController.text;
-          setState(() {});
+          // myText = _nameController.text;
+          // setState(() {});
         },
         child: Icon(Icons.send),
       ),
